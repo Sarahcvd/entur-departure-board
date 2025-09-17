@@ -1,15 +1,20 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import type { StopPlace } from '@/src/api/departures';
 import { Departure } from './Departure';
+import { useDepartureQueue } from '../hooks/useDepartureQueue';
 
 type BoardProps = {
   stopPlace: StopPlace;
 };
 
 export const Board = ({ stopPlace }: BoardProps) => {
-  const departures = stopPlace.estimatedCalls;
+  const { departures, loading, error, loadDepartures } = useDepartureQueue();
+
+  useEffect(() => {
+    loadDepartures();
+  }, [loadDepartures]);
 
   const getDelayMinutes = useCallback((aimed: string, expected: string) => {
     const aimedTime = new Date(aimed);
@@ -47,7 +52,8 @@ export const Board = ({ stopPlace }: BoardProps) => {
           <p>Forventet avgang</p>
           <p>Status</p>
         </div>
-        {departures.map((departure, index) => {
+        {loading && <p>Laster avganger...</p>}
+        {departures?.estimatedCalls?.map((departure, index) => {
           const delayMinutes = getDelayMinutes(
             departure.aimedArrivalTime,
             departure.expectedArrivalTime
