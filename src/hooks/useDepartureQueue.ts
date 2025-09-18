@@ -8,7 +8,7 @@ export const useDepartureQueue = () => {
   const isRequestActive = useRef(false);
   const pendingRequest = useRef(false);
 
-    const executeRequest = useCallback(async () => {
+    const loadDepartures = useCallback(async () => {
       if(isRequestActive.current){
         pendingRequest.current = true;
         return;
@@ -27,14 +27,10 @@ export const useDepartureQueue = () => {
 
       if (pendingRequest.current) {
         pendingRequest.current = false;
-        executeRequest();
+        loadDepartures();
       }
     }
     }, []);
-
-  const loadDepartures = useCallback(async () => {
-    executeRequest();
-  }, [executeRequest]);
 
   return { departures, loading, error, loadDepartures };
 };
