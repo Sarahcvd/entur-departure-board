@@ -15,9 +15,11 @@ export const Departure = ({ transportMode, publicCode, frontText, aimedArrivalTi
   return (
     <div key={`${frontText}`} className="border-b border-gray-200 py-2 grid grid-cols-4 gap-4">
       <div className="px-4 py-2 bg-red-600 text-white flex gap-3 w-fit rounded-lg items-center justify-center font-bold">
-        <div>
-          {transportMode === 'bus' && '🚌'}
-        </div>
+        {transportMode === 'bus' && (
+          <div>
+            🚌
+          </div>
+        )}
         {publicCode}
       </div>
       <p>
